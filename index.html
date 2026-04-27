@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meraj Enam — Marketing Intelligence</title>
+  <meta name="description" content="M.S. Marketing Intelligence graduate — building brands, growing communities, and turning data into decisions." />
+  <meta property="og:title" content="Meraj Enam — Marketing Intelligence" />
+  <meta property="og:description" content="Co-founder of AlterYouth. Marketing analyst, UI designer, data storyteller." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; overflow-x: hidden; }
+    #root { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function useBreakpoint() {
+      const [w, setW] = useState(window.innerWidth);
+      useEffect(() => {
+        const h = () => setW(window.innerWidth);
+        window.addEventListener("resize", h);
+        return () => window.removeEventListener("resize", h);
+      }, []);
+      return { isMobile: w < 600, isTablet: w >= 600 && w < 1024 };
+    }
+
+    const css = `
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body { overflow-x: hidden; }
+
+      .skill-card { transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+      .skill-card:hover { border-color: rgba(41,151,255,0.4) !important; transform: translateY(-3px); box-shadow: 0 12px 32px rgba(41,151,255,0.08); }
+      .skill-tag { cursor: default; }
+      .proj-card { transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+      .proj-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); border-color: rgba(41,151,255,0.3) !important; }
+      .nav-link { transition: color 0.2s ease, transform 0.15s ease; color: #a1a1a6 !important; display: inline-block; text-decoration: none; cursor: pointer; }
+      .nav-link:hover { color: #2997ff !important; transform: translateY(-1px); }
+      .btn-p { transition: background 0.2s ease, transform 0.15s ease; cursor: pointer; }
+      .btn-p:hover { background: #0077ed !important; transform: translateY(-1px); }
+      .btn-s { transition: background 0.2s ease, transform 0.15s ease; cursor: pointer; }
+      .btn-s:hover { background: rgba(41,151,255,0.08) !important; transform: translateY(-1px); }
+      .crow { border-radius: 8px; padding: 4px 6px; margin: -4px -6px; }
+      .cicon { transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+      .crow:hover .cicon { background: rgba(41,151,255,0.15) !important; border-color: rgba(41,151,255,0.4) !important; box-shadow: 0 0 10px rgba(41,151,255,0.2); }
+      .cico { transition: stroke 0.2s ease; }
+      .mobile-menu {
+        position: fixed; top: 48px; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.97); backdrop-filter: blur(20px);
+        z-index: 99; display: flex; flex-direction: column; padding: 2rem;
+        animation: fadeIn 0.18s ease forwards;
+      }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      .mmlink {
+        font-size: 28px; font-weight: 600; color: #6e6e73;
+        padding: 0.85rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.05);
+        letter-spacing: -0.03em; transition: color 0.15s ease; cursor: pointer;
+      }
+      .mmlink:hover { color: #f5f5f7; }
+      input, textarea, button { font-family: inherit; }
+      input:focus, textarea:focus { outline: none; border-color: #2997ff !important; }
+      @media (max-width: 599px) {
+        .skill-card:hover, .proj-card:hover, .btn-p:hover, .btn-s:hover { transform: none; }
+      }
+    `;
+
+    /* ── ICONS ── */
+    const BarChart = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2997ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="10"/></svg>;
+    const TrendUp = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2997ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 18 8.5 10.5 13.5 15.5 23 6"/><polyline points="17 6 23 6 23 12"/></svg>;
+    const PenTool = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2997ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>;
+    const MenuIco = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a1a1a6" strokeWidth="1.5" strokeLinecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>;
+    const CloseIco = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a1a1a6" strokeWidth="1.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+    const MailIco = ({ lit }) => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cico" style={{ stroke: lit ? "#60b4ff" : "#2997ff" }}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>;
+    const LIIco = ({ lit }) => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cico" style={{ stroke: lit ? "#60b4ff" : "#2997ff" }}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>;
+    const GlobeIco = ({ lit }) => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cico" style={{ stroke: lit ? "#60b4ff" : "#2997ff" }}><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
+
+    function ContactRow({ icon, label, href }) {
+      const [hov, setHov] = useState(false);
+      return (
+        <div className="crow" style={{ display:"flex", alignItems:"center", gap:10, fontSize:13, marginBottom:"0.75rem" }} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+          <div className="cicon" style={{ width:32, height:32, borderRadius:8, background:"#111", border:"0.5px solid rgba(255,255,255,0.08)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{icon(hov)}</div>
+          <a href={href} target="_blank" rel="noreferrer" style={{ color: hov?"#60b4ff":"#2997ff", textDecoration:"none", transition:"color 0.2s ease", wordBreak:"break-all" }}>{label}</a>
+        </div>
+      );
+    }
+
+    const Eyebrow = ({c}) => <p style={{ fontSize:11, fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", color:"#2997ff", marginBottom:"0.4rem" }}>{c}</p>;
+    const SecTitle = ({c,s}) => <p style={{ fontSize:s, fontWeight:600, marginBottom:"2rem", color:"#f5f5f7", letterSpacing:"-0.03em" }}>{c}</p>;
+    const GrpLabel = ({c}) => <div style={{ fontSize:10, fontWeight:600, letterSpacing:"0.08em", textTransform:"uppercase", color:"#6e6e73", marginBottom:"1.25rem", marginTop:"2.25rem", paddingBottom:"0.5rem", borderBottom:"0.5px solid rgba(255,255,255,0.08)" }}>{c}</div>;
+
+    function ExpRow({ period, org, href, children, last, isMobile }) {
+      return (
+        <div style={{ display:"grid", gridTemplateColumns: isMobile?"1fr":"160px 1fr", gap: isMobile?"0.25rem":"2.5rem", marginBottom: last?0:"2rem", paddingBottom: last?0:"2rem", borderBottom: last?"none":"0.5px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ textAlign: isMobile?"left":"right" }}>
+            <span style={{ fontSize:11, color:"#a1a1a6", fontWeight:300 }}>{period}</span>
+            <div style={{ fontSize:11, fontWeight:500, color:"#2997ff", marginTop: isMobile?1:4 }}>
+              {href ? <a href={href} target="_blank" rel="noreferrer" style={{ color:"#2997ff", textDecoration:"none" }}>{org} ↗</a> : org}
+            </div>
+          </div>
+          <div style={{ marginTop: isMobile?"0.5rem":0 }}>{children}</div>
+        </div>
+      );
+    }
+
+    function Tags({ tags, style }) {
+      return (
+        <div style={{ display:"flex", gap:4, flexWrap:"wrap", marginTop:"0.6rem", ...style }}>
+          {tags.map(t => <span key={t} className="skill-tag" style={{ fontSize:10, padding:"3px 9px", borderRadius:980, border:"0.5px solid rgba(41,151,255,0.25)", color:"#e0eeff", background:"rgba(41,151,255,0.12)" }}>{t}</span>)}
+        </div>
+      );
+    }
+
+    function Bullets({ items }) {
+      return (
+        <ul style={{ margin:"0 0 0.75rem", padding:0, listStyle:"none" }}>
+          {items.map((item, i) => (
+            <li key={i} style={{ fontSize:12, color:"#a1a1a6", lineHeight:1.65, fontWeight:300, paddingLeft:14, position:"relative", marginBottom:5 }}>
+              <span style={{ position:"absolute", left:2, color:"#2997ff", fontWeight:700, fontSize:14, lineHeight:1.4 }}>·</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    function ProjCard({ badge, title, context, link, featured, children }) {
+      return (
+        <div className="proj-card" style={{ background: featured?"#0a1929":"#111", border:`0.5px solid ${featured?"#2997ff":"rgba(255,255,255,0.08)"}`, borderRadius:14, padding:"1.25rem", display:"flex", flexDirection:"column" }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"0.4rem" }}>
+            <p style={{ fontSize:10, fontWeight:500, textTransform:"uppercase", letterSpacing:"0.06em", color: featured?"#2997ff":"#a1a1a6" }}>{badge}</p>
+            {link && <a href={link} target="_blank" rel="noreferrer" style={{ fontSize:10, color:"#2997ff", textDecoration:"none", border:"0.5px solid #2997ff", padding:"2px 8px", borderRadius:980, flexShrink:0 }}>Visit ↗</a>}
+          </div>
+          <h3 style={{ fontSize:14, fontWeight:600, marginBottom:"0.35rem", color: featured?"#2997ff":"#f5f5f7", lineHeight:1.3 }}>{title}</h3>
+          {context && <p style={{ fontSize:10, color:"#6e6e73", marginBottom:"0.5rem" }}>{context}</p>}
+          {children}
+        </div>
+      );
+    }
+
+    const h3s = { fontSize:14, fontWeight:600, marginBottom:"0.4rem", color:"#f5f5f7" };
+    const bodyS = { fontSize:13, color:"#a1a1a6", lineHeight:1.75, fontWeight:300 };
+
+    /* ── MAIN APP ── */
+    function App() {
+      const { isMobile, isTablet } = useBreakpoint();
+      const [menuOpen, setMenuOpen] = useState(false);
+      const [form, setForm] = useState({ name:"", email:"", subject:"", message:"" });
+      const [formStatus, setFormStatus] = useState(null);
+
+      const gx = isMobile ? "1.25rem" : isTablet ? "2rem" : "3rem";
+      const gy = isMobile ? "3rem" : isTablet ? "3.5rem" : "4.5rem";
+      const maxW = 1140;
+      const inner = { maxWidth: maxW, margin:"0 auto", padding:`${gy} ${gx}` };
+      const h1s = isMobile ? 34 : isTablet ? 40 : 48;
+      const h2s = isMobile ? 20 : 26;
+
+      const scrollTo = id => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior:"smooth", block:"start" });
+      };
+
+      const navLinks = [["About","about"],["Skills","skills"],["Experience","experience"],["Projects","projects"],["Education","education"],["Contact","contact"]];
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setFormStatus("sending");
+        try {
+          const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify(form)
+          });
+          if (res.ok) { setFormStatus("success"); setForm({ name:"", email:"", subject:"", message:"" }); }
+          else setFormStatus("error");
+        } catch { setFormStatus("error"); }
+      };
+
+      return (
+        <div style={{ fontFamily:"'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif", color:"#f5f5f7", background:"#000", fontSize:15, lineHeight:1.6, WebkitFontSmoothing:"antialiased" }}>
+          <style>{css}</style>
+
+          {/* NAV */}
+          <nav style={{ borderBottom:"0.5px solid rgba(255,255,255,0.08)", position:"sticky", top:0, background:"#000", zIndex:100 }}>
+            <div style={{ maxWidth:maxW, margin:"0 auto", padding:`0 ${gx}`, height:48, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+              <span style={{ fontSize:15, fontWeight:600, color:"#f5f5f7", letterSpacing:"-0.02em" }}>Meraj Enam</span>
+              {isMobile ? (
+                <button onClick={()=>setMenuOpen(o=>!o)} style={{ background:"none", border:"none", cursor:"pointer", padding:4, display:"flex" }}>
+                  {menuOpen ? <CloseIco /> : <MenuIco />}
+                </button>
+              ) : (
+                <div style={{ display:"flex", gap: isTablet?"1.25rem":"2rem" }}>
+                  {navLinks.map(([label,id]) => (
+                    <a key={id} onClick={()=>scrollTo(id)} className="nav-link" style={{ fontSize: isTablet?11:12 }}>{label}</a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </nav>
+
+          {menuOpen && (
+            <div className="mobile-menu">
+              {navLinks.map(([label,id]) => (
+                <span key={id} onClick={()=>{ scrollTo(id); setMenuOpen(false); }} className="mmlink">{label}</span>
+              ))}
+            </div>
+          )}
+
+          {/* HERO + ABOUT */}
+          <section id="about" style={{ borderBottom:"0.5px solid rgba(255,255,255,0.08)" }}>
+            <div style={inner}>
+              <div style={{ display:"grid", gridTemplateColumns: isMobile?"1fr":"1.2fr 0.8fr", gap: isMobile?"2rem":"4rem", alignItems:"center", marginBottom: isMobile?"2.5rem":"3.5rem" }}>
+                <div style={{ order: isMobile?2:1 }}>
+                  <p style={{ fontSize: isMobile?14:15, color:"#a1a1a6", fontWeight:300, marginBottom:"0.5rem" }}>👋 Hi, I'm</p>
+                  <h1 style={{ fontSize:h1s, lineHeight:1.05, fontWeight:600, color:"#f5f5f7", marginBottom:"1rem", letterSpacing:"-0.04em" }}>Meraj Enam.</h1>
+                  <p style={{ fontSize:14, color:"#a1a1a6", maxWidth:460, lineHeight:1.8, marginBottom:"1.25rem", fontWeight:300 }}>M.S. Marketing Intelligence graduate — building brands, growing communities, and turning data into decisions.</p>
+                  <p style={{ fontSize:13, color:"#a1a1a6", marginBottom:"1.75rem", fontWeight:300, lineHeight:1.7 }}>
+                    <span style={{ color:"#f5f5f7", fontWeight:500 }}>Co-founder, AlterYouth</span> · Graduate Assistant · UI Designer · Marketing Analyst
+                  </p>
+                  <div style={{ display:"flex", gap:"0.75rem", flexWrap:"wrap" }}>
+                    <a onClick={()=>scrollTo("contact")} className="btn-p" style={{ background:"#2997ff", color:"#fff", padding:"11px 24px", borderRadius:980, fontSize:13, fontWeight:500, textDecoration:"none" }}>Get in touch ↗</a>
+                    <a onClick={()=>scrollTo("projects")} className="btn-s" style={{ background:"transparent", color:"#2997ff", border:"0.5px solid #2997ff", padding:"11px 24px", borderRadius:980, fontSize:13, fontWeight:400, textDecoration:"none" }}>View projects</a>
+                  </div>
+                </div>
+                <div style={{ order: isMobile?1:2 }}>
+                  {/* TO ADD PHOTO: Replace the div below with <img src="photo.jpg" style={{width:"100%",height:"100%",objectFit:"cover",borderRadius:20}} /> */}
+                  <div style={{ background:"#111", border:"0.5px solid rgba(255,255,255,0.08)", borderRadius:20, overflow:"hidden", aspectRatio: isMobile?"4/3":"3/4", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:10 }}>
+                      <div style={{ width:60, height:60, borderRadius:"50%", background:"#0a1929", border:"1px solid rgba(41,151,255,0.3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, fontWeight:600, color:"#2997ff" }}>ME</div>
+                      <span style={{ fontSize:11, color:"#3a3a3c" }}>Add your photo here</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ borderTop:"0.5px solid rgba(255,255,255,0.06)", marginBottom: isMobile?"2rem":"2.5rem" }} />
+
+              <div style={{ maxWidth:700 }}>
+                <p style={{ fontSize:11, fontWeight:500, letterSpacing:"0.1em", textTransform:"uppercase", color:"#2997ff", marginBottom:"1.25rem" }}>My story</p>
+                {[
+                  "Growing up in Bangladesh, I saw something that didn't add up. Primary school was free, but kids kept dropping out. Not because they didn't want to learn — because their families needed them to work. The cost wasn't tuition. It was the cost of not working.",
+                  null,
+                  "That's how AlterYouth started. Fifteen dollars to replace what a child would earn working. Families could choose school over income. Strangers from across the world started supporting kids. One subscription at a time, desks filled back up.",
+                  "Building it taught me that the best marketing isn't about selling — it's about making someone feel the problem the way you do. From there, I learned how communities grow, how stories move people to act, and what the data actually shows beneath the surface. That mix — storytelling, community building, and rigorous analysis — is what I bring to the table.",
+                ].map((text, i) => (
+                  <p key={i} style={{ fontSize: isMobile?14:15, color:"#f5f5f7", lineHeight:1.9, marginBottom:"1.25rem", fontWeight:300 }}>
+                    {text === null
+                      ? <>I kept coming back to one question: <em style={{ color:"#2997ff", fontStyle:"normal" }}>what if they could just stay in school?</em> The gap between a kid working and a kid learning was fifteen dollars a month.</>
+                      : text}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* SKILLS */}
+          <section id="skills" style={{ borderBottom:"0.5px solid rgba(255,255,255,0.08)" }}>
+            <div style={inner}>
+              <Eyebrow c="Skills & Tools" /><SecTitle c="What I work with" s={h2s} />
+              <div style={{ display:"grid", gridTemplateColumns: isMobile?"1fr":isTablet?"1fr 1fr":"repeat(3,1fr)", gap:"0.75rem" }}>
+                {[
+                  { title:"Analytics & Data", desc:"Statistical analysis,\nexperimentation & NLP", icon:<BarChart />, tags:["Python","R","SQL","Tableau","NLP / VADER","A/B Testing","Regression"] },
+                  { title:"Marketing", desc:"Growth, content &\ncommunity building", icon:<TrendUp />, tags:["MailChimp","Social Media","Growth","Influencer","Content Strategy"] },
+                  { title:"Design & Creative", desc:"Brand, visual design &\nvideo production", icon:<PenTool />, tags:["Adobe CC","Canva","Figma","Explainer Video","AI-Assisted Front-End Dev"] },
+                ].map(({ title, desc, icon, tags }) => (
+                  <div key={title} className="skill-card" style={{ background:"#0d0d0d", border:"0.5px solid rgba(255,255,255,0.08)", borderRadius:16, padding:"1.75rem" }}>
+                    <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:"1.25rem", gap:"1rem" }}>
+                      <div style={{ flex:1 }}>
+                        <h4 style={{ fontSize:14, fontWeight:600, color:"#f5f5f7", marginBottom:"0.4rem" }}>{title}</h4>
+                        <p style={{ fontSize:11, color:"#6e6e73", fontWeight:300, lineHeight:1.6, whiteSpace:"pre-line" }}>{desc}</p>
+                      </div>
+                      <div style={{ width:40, height:40, borderRadius:10, background:"#0a1929", border:"0.5px solid rgba(41,151,255,0.2)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{icon}</div>
+                    </div>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
+                      {tags.map(t => <span key={t} className="skill-tag" style={{ fontSize:11, padding:"4px 11px", borderRadius:980, border:"0.5px solid rgba(41,151,255,0.25)", color:"#e0eeff", background:"rgba(41,151,255,0.12)", fontWeight:400 }}>{t}</span>)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* EXPERIENCE */}
+          <section id="experience" style={{ borderBottom:"0.5px solid rgba(255,255,255,0.08)" }}>
+            <div style={inner}>
+              <Eyebrow c="Experience" /><SecTitle c="Where I've worked" s={h2s} />
+              <GrpLabel c="Entrepreneurship" />
+
+              <ExpRow period="2018 – 2024" org="AlterYouth" href="https://alteryouth.com" isMobile={isMobile}>
+                <h3 style={h3s}>Co-founder & Creative Strategy Lead</h3>
+                <p style={bodyS}>Built and scaled a P2P subscription scholarship platform connecting a global diaspora with students at risk of dropping out of government primary schools across Bangladesh. Led brand identity, creative strategy, and influencer campaigns averaging 100–150 paid sign-ups each.</p>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.5rem", marginTop:"0.75rem" }}>
+                  {[["1,900+","Active monthly subscribers"],["3,200","Instagram followers grown"]].map(([n,l]) => (
+                    <div key={l} style={{ background:"#0a1929", borderRadius:10, padding:"0.6rem 0.75rem", textAlign:"center", border:"0.5px solid rgba(255,255,255,0.06)" }}>
+                      <span style={{ fontSize:17, fontWeight:600, color:"#2997ff", display:"block", letterSpacing:"-0.02em" }}>{n}</span>
+                      <span style={{ fontSize:9, color:"#2997ff", opacity:0.6, marginTop:1, display:"block" }}>{l}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginTop:"0.6rem" }}>
+                  {[
+                    { label:"MIT Solve", href:"https://solve.mit.edu/solutions/7509" },
+                    { label:"UN SDG Asia Pacific Award", href:"https://fintechbd.com/alteryouth-receives-2018-asia-pacific-sdg-enterprise-award-by-undp/" },
+                    { label:"World Expo Dubai", href:"https://www.expo2020dubai.com/en/understanding-expo/expo-initiatives/expo-live/global-innovators/alter-youth-limited" },
+                    { label:"Google Business Group", href:"https://www.youtube.com/watch?v=HeMTN2CPY5g" },
+                  ].map(({ label, href }) => (
+                    <a key={label} href={href} target="_blank" rel="noreferrer"
+                      style={{ fontSize:11, padding:"5px 12px", borderRadius:980, background:"#111", color:"#f5f5f7", border:"0.5px solid rgba(255,255,255,0.12)", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:5, fontWeight:400, transition:"border-color 0.2s, color 0.2s" }}
+                      onMouseEnter={e=>{ e.currentTarget.style.borderColor="rgba(41,151,255,0.5)"; e.currentTarget.style.color="#2997ff"; }}
+                      onMouseLeave={e=>{ e.currentTarget.style.borderColor="rgba(255,255,255,0.12)"; e.currentTarget.style.color="#f5f5f7"; }}>
+                      {label} <span style={{ fontSize:10 }}>↗</span>
+                    </a>
+                  ))}
+                </div>
+                <div style={{ marginTop:"1.5rem" }}>
+                  <p style={{ fontSize:10, fontWeight:600, letterSpacing:"0.08em", textTransform:"uppercase", color:"#6e6e73", marginBottom:"0.75rem" }}>Community impact</p>
+                  <div style={{ display:"grid", gridTemplateColumns: isMobile?"1fr":"1fr 1fr", gap:"0.75rem" }}>
+                    {[
+                      { i:"MK", name:"Mohuya Khan", handle:"@mohuyaakhan", bg:"#1a2540", col:"#2997ff", q:`"so grateful that I'm able to provide a scholarship for a child back in bangladesh… thank you to @alteryouthapp"` },
+                      { i:"BN", name:"Bengalis of New York", handle:"@bengalisofnewyork", bg:"#1a2a1a", col:"#4caf50", q:`"Last month, I got to visit a BD primary school that has @alteryouthapp scholarship students and talked to students, parents and teachers"` },
+                    ].map(({ i, name, handle, bg, col, q }) => (
+                      <div key={handle} style={{ background:"#0d0d0d", border:"0.5px solid rgba(255,255,255,0.07)", borderRadius:12, overflow:"hidden" }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:8, padding:"0.75rem 1rem", borderBottom:"0.5px solid rgba(255,255,255,0.06)" }}>
+                          <div style={{ width:28, height:28, borderRadius:"50%", background:bg, color:col, display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:700, flexShrink:0 }}>{i}</div>
+                          <div style={{ minWidth:0, flex:1 }}>
+                            <div style={{ fontSize:11, fontWeight:600, color:"#f5f5f7", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{name}</div>
+                            <div style={{ fontSize:10, color:"#6e6e73", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{handle}</div>
+                          </div>
+                        </div>
+                        <div style={{ padding:"0.75rem 1rem" }}><p style={{ fontSize:11, color:"#a1a1a6", lineHeight:1.6, fontWeight:300 }}>{q}</p></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <Tags tags={["Brand Strategy","Social Media","Growth","Canva","Adobe CC"]} style={{ marginTop:"0.85rem" }} />
+              </ExpRow>
+
+              <ExpRow period="2020 – 2021" org="DhakaDoctor.live" href="https://dhakadoctor.live" isMobile={isMobile}>
+                <h3 style={h3s}>UI Designer & Creative Lead</h3>
+                <p style={bodyS}>Designed the UI and produced explainer videos for DhakaDoctor.live's market launch — a telemedicine platform built during COVID-19 to connect patients with doctors across Bangladesh.</p>
+                <Tags tags={["UI Design","Figma","Explainer Video","Adobe CC"]} />
+              </ExpRow>
+
+              <GrpLabel c="Towson University" />
+
+              <ExpRow period="Jan 2025 – Present" org="CBE Dean's Office" isMobile={isMobile}>
+                <h3 style={h3s}>Graduate Assistant</h3>
+                <p style={bodyS}>Email marketing campaigns via MailChimp, social media content creation, graphic design, writing for the CBE Tiger Tidbits newsletter, and event coordination support.</p>
+                <Tags tags={["MailChimp","Content","Canva","Copywriting"]} />
+              </ExpRow>
+
+              <ExpRow period="Summer 2025" org="StarTUp Accelerator" isMobile={isMobile}>
+                <h3 style={h3s}>Resident Venture Marketing Intern</h3>
+                <p style={bodyS}>Supported early-stage startup founders with marketing strategy, brand positioning, and go-to-market planning within Towson's startup accelerator ecosystem.</p>
+                <Tags tags={["Go-to-Market","Brand","Strategy"]} />
+              </ExpRow>
+
+              <ExpRow period="Jan – Dec 2025" org="ISSO / CIS Dept." isMobile={isMobile} last>
+                <h3 style={h3s}>Global Ambassador & Social Media Designer</h3>
+                <p style={bodyS}>Represented Towson's international student community as a Global Ambassador through ISSO, and created social media graphics and content for the CIS department.</p>
+                <Tags tags={["Social Media","Canva","Community"]} />
+              </ExpRow>
+            </div>
+          </section>
+
+          {/* PROJECTS */}
+          <section id="projects" style={{ borderBottom:"0.5px solid rgba(255,255,255,0.08)" }}>
+            <div style={inner}>
+              <Eyebrow c="Projects" /><SecTitle c="Things I've built & analyzed" s={h2s} />
+              <div style={{ display:"grid", gridTemplateColumns: isMobile?"1fr":isTablet?"1fr 1fr":"repeat(3,1fr)", gap:"0.75rem" }}>
+                <ProjCard featured badge="Featured" title="AlterYouth" link="https://alteryouth.com">
+                  <p style={{ fontSize:13, color:"#2997ff", opacity:0.8, lineHeight:1.65, marginBottom:"0.6rem", fontWeight:300 }}>P2P scholarship platform connecting a global diaspora with students across Bangladesh. Co-founded 2018, grown to 1,900+ active monthly subscribers with international recognition.</p>
+                  <Tags tags={["Brand Strategy","Growth","Adobe CC","Canva"]} />
+                </ProjCard>
+                <ProjCard badge="A/B Testing" title="Booking.com Funnel Experiment" context="MKTG 780 · R">
+                  <Bullets items={["Simulated a real-world CRO experiment on Booking.com's booking funnel — tested whether a redesigned variant drove statistically significant lift in conversion rate using t-tests and chi-square analysis.","Identified the winning variant with documented statistical significance and minimum detectable effect size, producing a go/no-go recommendation in the format used by experimentation teams at growth-stage companies."]} />
+                  <Tags tags={["R","t-test","Chi-square","A/B Testing","CRO"]} />
+                </ProjCard>
+                <ProjCard badge="NLP · Capstone" title="What Makes Customers Recommend a Product?" context="MKTG 881 · Python · 2,976 reviews">
+                  <Bullets items={["Analyzed 2,976 Amazon iPhone reviews to find that positive-sentiment customers are 61 percentage points more likely to recommend — a gap that directly maps to word-of-mouth revenue opportunity.","Pinpointed Price and Battery Life as the two features dragging sentiment down most, giving a product marketing team a clear brief: reframe value messaging and address battery concerns before customers churn."]} />
+                  <Tags tags={["Python","VADER","NLP","Logistic Regression","TF-IDF"]} />
+                </ProjCard>
+                <ProjCard badge="Tableau" title="Holiday Sales: Where the Money Actually Is" context="Independent Project · Tableau">
+                  <Bullets items={["Built a multi-view Tableau dashboard across 2,155 orders segmented by state, product, month, and discount — revealing that 60% of peak-season revenue was concentrated in just two states.","Identified 'non-responsive' states where heavy discounting produced no measurable sales lift, enabling a clear budget reallocation recommendation: shift spend toward high-yield markets."]} />
+                  <Tags tags={["Tableau","Sales Analysis","Dashboard","LOD Expressions"]} />
+                </ProjCard>
+                <ProjCard badge="Design" title="DhakaDoctor.live" context="COVID-19 Telemedicine Launch" link="https://dhakadoctor.live">
+                  <p style={{ fontSize:13, color:"#a1a1a6", lineHeight:1.65, marginBottom:"0.6rem", fontWeight:300 }}>Designed UI and produced explainer videos for market launch — helping patients connect with doctors remotely across Bangladesh.</p>
+                  <Tags tags={["Figma","UI Design","Adobe Premiere"]} />
+                </ProjCard>
+              </div>
+            </div>
+          </section>
+
+          {/* EDUCATION */}
+          <section id="education" style={{ borderBottom:"0.5px solid rgba(255,255,255,0.08)" }}>
+            <div style={inner}>
+              <Eyebrow c="Education" /><SecTitle c="Academic background" s={h2s} />
+              <ExpRow period="2024 – 2026" org="Towson University" isMobile={isMobile}>
+                <h3 style={h3s}>M.S. Marketing Intelligence <span style={{ color:"#2997ff" }}>· STEM-designated</span></h3>
+                <p style={bodyS}>Concentration in marketing analytics, consumer behavior, and data-driven strategy. Coursework includes statistical modeling, NLP, A/B experimentation, and marketing research methods.</p>
+                <div style={{ display:"flex", gap:5, flexWrap:"wrap", marginTop:"0.6rem" }}>
+                  {[{label:"GPA",val:"3.72"},{label:"Designation",val:"STEM"}].map(({label,val}) => (
+                    <span key={label} style={{ fontSize:11, padding:"3px 10px", borderRadius:980, background:"#0a1929", color:"#2997ff", border:"0.5px solid rgba(41,151,255,0.25)" }}>
+                      <span style={{ opacity:0.6 }}>{label}: </span>{val}
+                    </span>
+                  ))}
+                </div>
+                <Tags tags={["Marketing Analytics","Consumer Behavior","NLP","A/B Testing","Statistical Modeling","R","Python"]} />
+              </ExpRow>
+              <ExpRow period="2014 – 2018" org="Independent University, Bangladesh" isMobile={isMobile} last>
+                <h3 style={h3s}>B.B.A. Marketing</h3>
+                <p style={bodyS}>Undergraduate foundation in marketing principles, brand management, consumer psychology, and business strategy. Co-founded AlterYouth during this period.</p>
+                <Tags tags={["Marketing","Brand Management","Consumer Psychology","Business Strategy"]} />
+              </ExpRow>
+            </div>
+          </section>
+
+          {/* CONTACT */}
+          <section id="contact">
+            <div style={inner}>
+              <div style={{ display:"grid", gridTemplateColumns: isMobile?"1fr":"1fr 1fr", gap: isMobile?"2.5rem":"4rem", alignItems:"start" }}>
+                <div>
+                  <h2 style={{ fontSize: isMobile?22:26, fontWeight:600, marginBottom:"1rem", color:"#f5f5f7", letterSpacing:"-0.03em" }}>Let's work together.</h2>
+                  <p style={{ color:"#a1a1a6", fontSize:13, lineHeight:1.8, marginBottom:"1.75rem", fontWeight:300 }}>I'm actively looking for full-time opportunities in Marketing Analytics, Marketing Technology, or Growth roles. Whether you have a question or just want to connect, I'd love to hear from you.</p>
+                  <ContactRow icon={l=><MailIco lit={l}/>} label="merajenam94@gmail.com" href="mailto:merajenam94@gmail.com" />
+                  <ContactRow icon={l=><LIIco lit={l}/>} label="linkedin.com/in/meraj-enam" href="https://www.linkedin.com/in/meraj-enam/" />
+                  <ContactRow icon={l=><GlobeIco lit={l}/>} label="alteryouth.com" href="https://alteryouth.com" />
+                </div>
+                <form onSubmit={handleSubmit} style={{ background:"#111", borderRadius:16, padding:"1.5rem", border:"0.5px solid rgba(255,255,255,0.08)" }}>
+                  {[["name","Name","text","Your name"],["email","Email","email","your@email.com"],["subject","Subject","text","What's this about?"]].map(([k,l,t,ph]) => (
+                    <div key={k} style={{ marginBottom:"0.75rem" }}>
+                      <label style={{ display:"block", fontSize:10, fontWeight:600, color:"#a1a1a6", marginBottom:5, textTransform:"uppercase", letterSpacing:"0.08em" }}>{l}</label>
+                      <input type={t} placeholder={ph} value={form[k]} onChange={e=>setForm(p=>({...p,[k]:e.target.value}))} required
+                        style={{ width:"100%", background:"#1c1c1e", border:"0.5px solid rgba(255,255,255,0.1)", borderRadius:10, color:"#f5f5f7", fontSize:13, padding:"11px 13px", fontWeight:300 }} />
+                    </div>
+                  ))}
+                  <div style={{ marginBottom:"0.75rem" }}>
+                    <label style={{ display:"block", fontSize:10, fontWeight:600, color:"#a1a1a6", marginBottom:5, textTransform:"uppercase", letterSpacing:"0.08em" }}>Message</label>
+                    <textarea placeholder="Say hello..." value={form.message} onChange={e=>setForm(p=>({...p,message:e.target.value}))} required
+                      style={{ width:"100%", background:"#1c1c1e", border:"0.5px solid rgba(255,255,255,0.1)", borderRadius:10, color:"#f5f5f7", fontSize:13, padding:"11px 13px", fontWeight:300, height:100, resize:"none" }} />
+                  </div>
+                  {formStatus === "success" && <p style={{ fontSize:12, color:"#4caf50", marginBottom:"0.5rem" }}>✓ Message sent! I'll get back to you soon.</p>}
+                  {formStatus === "error" && <p style={{ fontSize:12, color:"#ff6b6b", marginBottom:"0.5rem" }}>Something went wrong — please email me directly.</p>}
+                  <button type="submit" disabled={formStatus==="sending"}
+                    style={{ display:"block", width:"100%", marginTop:"0.75rem", backgroundColor:"#2997ff", color:"#fff", border:"none", borderRadius:10, padding:13, fontSize:13, fontWeight:600, cursor: formStatus==="sending"?"not-allowed":"pointer", opacity: formStatus==="sending"?0.7:1 }}>
+                    {formStatus === "sending" ? "Sending..." : "Send message →"}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <footer style={{ textAlign:"center", padding:"2rem 1.25rem", fontSize:11, color:"#6e6e73", letterSpacing:"0.04em" }}>
+            Designed & built by Meraj Enam · © 2026
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
