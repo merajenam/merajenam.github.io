@@ -16,16 +16,16 @@
 :root{
   --bg:#0b0b0c; --bg2:#121214; --card:#151517; --ink:#f3efe6; --ink2:#bdb8ad; --muted:#8a867d;
   --line:rgba(243,239,230,.10); --line2:rgba(243,239,230,.18);
-  --accent:#ff5a1f; --accent-soft:rgba(255,90,31,.14); --mint:#7ce0c3; --mint-soft:rgba(124,224,195,.14);
-  --gold:#f2c14e; --violet:#a594ff;
+  --accent:#8f72ff; --accent-soft:rgba(143,114,255,.14); --mint:#7ce0c3; --mint-soft:rgba(124,224,195,.14);
+  --gold:#f2c14e; --violet:#4cc9ff;
   --serif:"Instrument Serif",Georgia,serif; --sans:"Inter Tight",system-ui,-apple-system,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
   --gx:clamp(16px,4vw,48px); --max:1200px;
 }
 :root[data-theme="light"]{
   --bg:#f4f1ea; --bg2:#ebe7dd; --card:#fbf9f4; --ink:#141414; --ink2:#45433e; --muted:#77736a;
   --line:rgba(20,20,20,.10); --line2:rgba(20,20,20,.2);
-  --accent:#e2470f; --accent-soft:rgba(226,71,15,.10); --mint:#11866a; --mint-soft:rgba(17,134,106,.10);
-  --gold:#b98710; --violet:#5b48d6;
+  --accent:#5a3ee6; --accent-soft:rgba(90,62,230,.10); --mint:#11866a; --mint-soft:rgba(17,134,106,.10);
+  --gold:#b98710; --violet:#1b8fd1;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -48,7 +48,7 @@ nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
 .logo{font-weight:600;letter-spacing:-.02em;text-decoration:none;display:flex;align-items:center;gap:10px}
 .logo .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:pulse 2.4s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,90,31,.55)}70%{box-shadow:0 0 0 10px rgba(255,90,31,0)}100%{box-shadow:0 0 0 0 rgba(255,90,31,0)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(143,114,255,.55)}70%{box-shadow:0 0 0 10px rgba(143,114,255,0)}100%{box-shadow:0 0 0 0 rgba(143,114,255,0)}}
 .navlinks{display:flex;gap:28px;align-items:center}
 .navlinks a{text-decoration:none;font-size:14px;color:var(--ink2);transition:color .2s}
 .navlinks a:hover{color:var(--ink)}
@@ -219,7 +219,7 @@ h2 em{color:var(--accent)}
 .donut .bgc{stroke:var(--line)}
 .donut .fg{stroke:var(--accent);stroke-dasharray:0 999;transition:stroke-dasharray 1.4s cubic-bezier(.2,.7,.2,1);transform:rotate(-90deg);transform-origin:center}
 .camp{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;align-items:end;height:90px;margin-top:14px}
-.camp i{display:block;border-radius:6px 6px 2px 2px;background:linear-gradient(to top,var(--accent),color-mix(in srgb,var(--accent) 40%,var(--gold)));height:0;transition:height 1s cubic-bezier(.2,.7,.2,1)}
+.camp i{display:block;border-radius:6px 6px 2px 2px;background:linear-gradient(to top,var(--accent),color-mix(in srgb,var(--accent) 45%,var(--violet)));height:0;transition:height 1s cubic-bezier(.2,.7,.2,1)}
 .camp i.opt{background:repeating-linear-gradient(45deg,var(--line2) 0 4px,transparent 4px 8px)}
 .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px;font-size:12px;color:var(--ink2)}
 .flow b{font-weight:500;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
@@ -304,7 +304,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <header class="hero" id="top">
   <div class="hero-grid" aria-hidden="true"></div>
   <svg class="hero-chart" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true">
-    <defs><linearGradient id="heroFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a1f" stop-opacity=".22"/><stop offset="1" stop-color="#ff5a1f" stop-opacity="0"/></linearGradient></defs>
+    <defs><linearGradient id="heroFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8f72ff" stop-opacity=".22"/><stop offset="1" stop-color="#8f72ff" stop-opacity="0"/></linearGradient></defs>
     <path class="area" d="M0,440 C80,430 120,420 170,400 S260,380 300,340 S380,330 420,280 S500,250 540,200 S620,160 660,120 S740,70 800,40 L800,500 L0,500Z"/>
     <path class="line" d="M0,440 C80,430 120,420 170,400 S260,380 300,340 S380,330 420,280 S500,250 540,200 S620,160 660,120 S740,70 800,40"/>
     <circle cx="660" cy="120" r="5"/><circle class="ring" cx="660" cy="120" r="6" stroke-width="1.5"/>
